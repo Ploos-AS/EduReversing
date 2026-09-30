@@ -18,6 +18,8 @@ RUN apt-get update \
        binutils-multiarch \
        gcc \
        g++ \
+       gcc-mingw-w64-x86-64 \
+       binutils-mingw-w64-x86-64 \
        gdb \
        make \
        cmake \
