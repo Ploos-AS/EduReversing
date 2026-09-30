@@ -1,11 +1,12 @@
 CC ?= cc
+PE_CC ?= x86_64-w64-mingw32-gcc
 WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -113,6 +114,12 @@ capstone-m0: $(BUILD)/capstone-m0
 $(BUILD)/capstone-m0: fixtures/src/capstone-m0.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) -O2 -s -o $@ $<
+
+pe-lab: $(BUILD)/pe-lab.exe
+
+$(BUILD)/pe-lab.exe: fixtures/src/pe-lab.c
+	mkdir -p $(BUILD)
+	$(PE_CC) $(WARN) -O1 -fno-inline -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
