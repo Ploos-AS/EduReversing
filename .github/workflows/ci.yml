@@ -76,6 +76,15 @@ jobs:
           x86_64-w64-mingw32-objdump -p build/case-pe-01.exe >/tmp/case-pe-01.txt
           grep -q "DLL Name:" /tmp/case-pe-01.txt
           x86_64-w64-mingw32-objdump -p build/pe-lab.exe >/tmp/pe-lab.txt
+          file build/edu-reversing.dll | grep -q "PE32+ executable"
+          x86_64-w64-mingw32-objdump -p build/edu-reversing.dll >/tmp/pe-library.txt
+          grep -q "edu_mix" /tmp/pe-library.txt
+          grep -q "edu_class" /tmp/pe-library.txt
+          file build/pe-resource-lab.exe | grep -q "PE32+ executable"
+          x86_64-w64-mingw32-objdump -h build/pe-resource-lab.exe >/tmp/pe-resource-sections.txt
+          grep -q ".rsrc" /tmp/pe-resource-sections.txt
+          strings -el build/pe-resource-lab.exe >/tmp/pe-resource.strings
+          grep -q "EduReversing benign PE resource" /tmp/pe-resource.strings
           grep -q "DLL Name:" /tmp/pe-lab.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
