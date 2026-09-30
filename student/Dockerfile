@@ -20,6 +20,11 @@ RUN apt-get update \
        g++ \
        gcc-mingw-w64-x86-64 \
        binutils-mingw-w64-x86-64 \
+       gcc-aarch64-linux-gnu \
+       binutils-aarch64-linux-gnu \
+       gcc-m68k-linux-gnu \
+       binutils-m68k-linux-gnu \
+       qemu-user \
        gdb \
        make \
        cmake \
