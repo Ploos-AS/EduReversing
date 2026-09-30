@@ -71,6 +71,10 @@ jobs:
           grep -q "diagnostic-mode:quartz" /tmp/case02.strings
           file build/pe-lab.exe | grep -Eq "PE32\+ executable.*x86-64|PE32\+ executable.*x86-64"
           x86_64-w64-mingw32-objdump -f build/pe-lab.exe | grep -q "pei-x86-64"
+          file build/case-pe-01.exe | grep -q "PE32+ executable"
+          x86_64-w64-mingw32-objdump -f build/case-pe-01.exe | grep -q "pei-x86-64"
+          x86_64-w64-mingw32-objdump -p build/case-pe-01.exe >/tmp/case-pe-01.txt
+          grep -q "DLL Name:" /tmp/case-pe-01.txt
           x86_64-w64-mingw32-objdump -p build/pe-lab.exe >/tmp/pe-lab.txt
           grep -q "DLL Name:" /tmp/pe-lab.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
