@@ -17,12 +17,14 @@ jobs:
         run: sh scripts/check-repository-policy.sh
 
       - name: Build benign fixtures
-        run: make fixtures
+        run: make all
 
       - name: Inspect fixture
         run: |
           file build/unknown-01
           readelf -h build/unknown-01
+          readelf -h build/elf-lab
+          readelf -r build/elf-lab
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
