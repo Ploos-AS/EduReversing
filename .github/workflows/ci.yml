@@ -85,6 +85,14 @@ jobs:
           grep -q ".rsrc" /tmp/pe-resource-sections.txt
           strings -el build/pe-resource-lab.exe >/tmp/pe-resource.strings
           grep -q "EduReversing benign PE resource" /tmp/pe-resource.strings
+          file build/case-pe-02.exe | grep -q "PE32+ executable"
+          x86_64-w64-mingw32-objdump -h build/case-pe-02.exe >/tmp/case-pe-02-sections.txt
+          grep -q ".rsrc" /tmp/case-pe-02-sections.txt
+          strings -a build/case-pe-02.exe >/tmp/case-pe-02-ascii.txt
+          grep -q "training-marker:PE-CASE-05" /tmp/case-pe-02-ascii.txt
+          strings -el build/case-pe-02.exe >/tmp/case-pe-02-wide.txt
+          grep -q "EduReversing Case 05 training resource" /tmp/case-pe-02-wide.txt
+          grep -q "telemetry.example.invalid" /tmp/case-pe-02-wide.txt
           grep -q "DLL Name:" /tmp/pe-lab.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
