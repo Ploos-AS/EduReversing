@@ -37,8 +37,9 @@ jobs:
           test "$(./build/diff-v1 11)" = "18"
           test "$(./build/diff-v2 11)" = "34"
           ./build/defensive-lab | grep -q "^config:version=1;mode=training$"
-          strings -a build/defensive-lab | grep -q "telemetry.example.com"
-          strings -a build/defensive-lab | grep -q "192.0.2.42"
+          strings -a build/defensive-lab >/tmp/defensive.strings
+          grep -q "telemetry.example.com" /tmp/defensive.strings
+          grep -q "192.0.2.42" /tmp/defensive.strings
           python3 tools/hunk_info.py build/minimal.hunk >/tmp/hunk.txt
           grep -q "^HUNK_HEADER table=1 first=0 last=0$" /tmp/hunk.txt
           grep -q "^HUNK_CODE longs=1 bytes=702a4e75$" /tmp/hunk.txt
@@ -65,11 +66,13 @@ jobs:
           set -e
           test "$case2_rc" -eq 4
           grep -q "^result=unknown$" /tmp/case02.out
-          strings -a build/case-02 | grep -q "diagnostic-mode:quartz"
+          strings -a build/case-02 >/tmp/case02.strings
+          grep -q "diagnostic-mode:quartz" /tmp/case02.strings
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
-          strings -a build/capstone-m0 | grep -q "update.example.invalid"
-          strings -a build/capstone-m0 | grep -q "autorun:training-decoy"
+          strings -a build/capstone-m0 >/tmp/capstone.strings
+          grep -q "update.example.invalid" /tmp/capstone.strings
+          grep -q "autorun:training-decoy" /tmp/capstone.strings
           set +e
           ./build/capstone-m0 Z:test >/dev/null
           cap_rc=$?
