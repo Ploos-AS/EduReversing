@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include <stddef.h>
 
-static const char documentation_domain[] = "telemetry.example.com";
-static const char documentation_ip[] = "192.0.2.42";
-static const char persistence_description[] = "example:auto-start-entry";
-static const char analysis_note[] = "sandbox-check:documentation-only";
+static const volatile char documentation_domain[] = "telemetry.example.com";
+static const volatile char documentation_ip[] = "192.0.2.42";
+static const volatile char persistence_description[] = "example:auto-start-entry";
+static const volatile char analysis_note[] = "sandbox-check:documentation-only";
 
 /* Encoded benign text: version=1;mode=training */
 static const unsigned char encoded_config[] = {
