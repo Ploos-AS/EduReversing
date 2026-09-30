@@ -6,9 +6,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01
 
 fixtures: $(BUILD)/unknown-01
 
@@ -173,6 +173,12 @@ case-aarch64-01: $(BUILD)/case-aarch64-01
 $(BUILD)/case-aarch64-01: fixtures/src/case-aarch64-01.c
 	mkdir -p $(BUILD)
 	$(AARCH64_CC) $(WARN) -O2 -s -o $@ $<
+
+case-m68k-01: $(BUILD)/case-m68k-01
+
+$(BUILD)/case-m68k-01: fixtures/src/case-m68k-01.c
+	mkdir -p $(BUILD)
+	$(M68K_CC) $(WARN) -O2 -s -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
