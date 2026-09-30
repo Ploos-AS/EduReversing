@@ -1,12 +1,14 @@
 CC ?= cc
 PE_CC ?= x86_64-w64-mingw32-gcc
+AARCH64_CC ?= aarch64-linux-gnu-gcc
+M68K_CC ?= m68k-linux-gnu-gcc
 WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -153,6 +155,18 @@ $(BUILD)/capstone-m1.exe: fixtures/src/capstone-m1.c fixtures/src/capstone-m1.rc
 	mkdir -p $(BUILD)
 	x86_64-w64-mingw32-windres fixtures/src/capstone-m1.rc -O coff -o $(BUILD)/capstone-m1.res
 	$(PE_CC) $(WARN) -O2 -s -o $@ fixtures/src/capstone-m1.c $(BUILD)/capstone-m1.res
+
+aarch64-lab: $(BUILD)/aarch64-lab
+
+$(BUILD)/aarch64-lab: fixtures/src/aarch64-lab.c
+	mkdir -p $(BUILD)
+	$(AARCH64_CC) $(WARN) -O1 -fno-inline -o $@ $<
+
+m68k-lab: $(BUILD)/m68k-lab
+
+$(BUILD)/m68k-lab: fixtures/src/m68k-lab.c
+	mkdir -p $(BUILD)
+	$(M68K_CC) $(WARN) -O1 -fno-inline -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
