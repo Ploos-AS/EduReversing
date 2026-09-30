@@ -133,6 +133,17 @@ jobs:
           m68k-linux-gnu-objdump -d build/m68k-lab >/tmp/m68k-lab.dis
           grep -q "<mix>" /tmp/m68k-lab.dis
           qemu-m68k -L /usr/m68k-linux-gnu build/m68k-lab 7 | grep -Eq "^result=[0-9a-f]{8}$"
+          file build/case-m68k-01 | grep -q "Motorola m68k"
+          readelf -h build/case-m68k-01 | grep -q "MC68000"
+          readelf -h build/case-m68k-01 | grep -q "2's complement, big endian"
+          m68k-linux-gnu-objdump -d build/case-m68k-01 >/tmp/case-m68k-01.dis
+          qemu-m68k -L /usr/m68k-linux-gnu build/case-m68k-01 68 hello | grep -Eq "^state=ok class=[0-3] value=[0-9a-f]{8}$"
+          set +e
+          qemu-m68k -L /usr/m68k-linux-gnu build/case-m68k-01 777 hello >/tmp/case-m68k-unknown.txt
+          m68k_rc=$?
+          set -e
+          test "$m68k_rc" -eq 4
+          grep -q "^state=unknown$" /tmp/case-m68k-unknown.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
