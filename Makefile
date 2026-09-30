@@ -3,9 +3,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab clean
+.PHONY: all fixtures compiler-lab elf-lab clean
 
-all: fixtures compiler-lab
+all: fixtures compiler-lab elf-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -27,6 +27,12 @@ $(BUILD)/compiler-lab-O1: fixtures/src/compiler-lab.c
 $(BUILD)/compiler-lab-O2: fixtures/src/compiler-lab.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) $(REVERSE_FLAGS) -O2 -o $@ $<
+
+elf-lab: $(BUILD)/elf-lab
+
+$(BUILD)/elf-lab: fixtures/src/elf-lab.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O1 -fno-inline -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
