@@ -21,6 +21,7 @@ jobs:
 
       - name: Inspect fixture
         run: |
+          set -x
           file build/unknown-01
           readelf -h build/unknown-01
           readelf -h build/elf-lab
