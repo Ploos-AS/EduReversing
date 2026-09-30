@@ -57,6 +57,15 @@ jobs:
           set -e
           test "$case_rc" -eq 3
           grep -q "^case-01: invalid input$" /tmp/case01.err
+          file build/case-02 | grep -q "ELF 64-bit"
+          ./build/case-02 17 5 | grep -Eq "^result=(north|east|south|west) value=[0-9]+$"
+          set +e
+          ./build/case-02 18 5 >/tmp/case02.out
+          case2_rc=$?
+          set -e
+          test "$case2_rc" -eq 4
+          grep -q "^result=unknown$" /tmp/case02.out
+          strings -a build/case-02 | grep -q "diagnostic-mode:quartz"
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
