@@ -1,0 +1,37 @@
+schema_version: 1
+project: EduReversing
+work:
+  id: edureversing
+edition:
+  number: 1
+  revision: 1
+  year: 2026
+lifecycle:
+  status: draft
+publications:
+  en:
+    title: Assembly, Reverse Engineering and Defensive Malware Analysis
+    author: Per Gustav Ousdal
+    publisher: Ploos AS
+    copyright_holder: Ploos AS
+    license: CC-BY-4.0
+    products:
+      epub:
+        isbn: PENDING
+      pdf:
+        isbn: PENDING
+      web:
+        isbn: null
+distribution:
+  amazon_kdp: {enabled: true, product: epub, external_id: null}
+  kobo: {enabled: true, product: epub, external_id: null}
+  apple_books: {enabled: true, product: epub, external_id: null}
+  google_play_books: {enabled: true, product: epub, external_id: null}
+legal_deposit:
+  norway:
+    required: true
+    status: pending
+    deposited_at: null
+    method: null
+    reference: null
+    artifacts: []
