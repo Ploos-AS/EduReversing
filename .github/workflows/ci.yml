@@ -28,6 +28,7 @@ jobs:
           file build/static-lab
           ./build/static-lab 123 >/tmp/static.txt
           grep -Eq "^class [AB]$" /tmp/static.txt
+          ./build/dynamic-lab 17 | grep -Eq "^result=[0-9]+ observations=[0-9]+$"
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
