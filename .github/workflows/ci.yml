@@ -51,5 +51,6 @@ jobs:
             gdb --version &&
             objdump --version &&
             readelf --version &&
-            file --version
+            file --version &&
+            r2 -v | grep -F "6.2.2"
           '
