@@ -3,9 +3,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -88,6 +88,13 @@ hunk-lab: $(BUILD)/minimal.hunk
 $(BUILD)/minimal.hunk: tools/make_hunk_fixture.py
 	mkdir -p $(BUILD)
 	python3 tools/make_hunk_fixture.py $@
+
+hunk-reloc-lab: $(BUILD)/reloc.hunk
+	python3 tools/hunk_records.py $(BUILD)/reloc.hunk
+
+$(BUILD)/reloc.hunk: tools/make_hunk_reloc_fixture.py
+	mkdir -p $(BUILD)
+	python3 tools/make_hunk_reloc_fixture.py $@
 
 clean:
 	rm -rf $(BUILD)
