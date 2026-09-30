@@ -69,6 +69,10 @@ jobs:
           grep -q "^result=unknown$" /tmp/case02.out
           strings -a build/case-02 >/tmp/case02.strings
           grep -q "diagnostic-mode:quartz" /tmp/case02.strings
+          file build/pe-lab.exe | grep -Eq "PE32\+ executable.*x86-64|PE32\+ executable.*x86-64"
+          x86_64-w64-mingw32-objdump -f build/pe-lab.exe | grep -q "pei-x86-64"
+          x86_64-w64-mingw32-objdump -p build/pe-lab.exe >/tmp/pe-lab.txt
+          grep -q "DLL Name:" /tmp/pe-lab.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
@@ -99,6 +103,8 @@ jobs:
         run: |
           docker run --rm edureversing-student:m0 sh -lc '
             gcc --version &&
+            x86_64-w64-mingw32-gcc --version &&
+            x86_64-w64-mingw32-objdump --version &&
             gdb --version &&
             objdump --version &&
             readelf --version &&
