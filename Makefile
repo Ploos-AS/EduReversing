@@ -4,9 +4,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01
 
 fixtures: $(BUILD)/unknown-01
 
@@ -120,6 +120,12 @@ pe-lab: $(BUILD)/pe-lab.exe
 $(BUILD)/pe-lab.exe: fixtures/src/pe-lab.c
 	mkdir -p $(BUILD)
 	$(PE_CC) $(WARN) -O1 -fno-inline -o $@ $<
+
+case-pe-01: $(BUILD)/case-pe-01.exe
+
+$(BUILD)/case-pe-01.exe: fixtures/src/case-pe-01.c
+	mkdir -p $(BUILD)
+	$(PE_CC) $(WARN) -O2 -s -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
