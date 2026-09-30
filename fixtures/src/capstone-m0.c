@@ -14,8 +14,8 @@ static const struct rule rules[] = {
     { 'C', 7, 211, 0x0f1e2d3cu }
 };
 
-static const char noise1[] = "update.example.invalid";
-static const char noise2[] = "autorun:training-decoy";
+static const volatile char noise1[] = "update.example.invalid";
+static const volatile char noise2[] = "autorun:training-decoy";
 
 static uint32_t rol32(uint32_t x, unsigned n) { return (x << n) | (x >> (32u-n)); }
 
