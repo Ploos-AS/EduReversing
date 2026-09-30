@@ -47,6 +47,6 @@ int main(int argc,char **argv)
     if(*payload=='\0') return 5;
     v=process(r,(const unsigned char*)payload);
     printf("ticket=%08x class=%u\n",v,(unsigned)((v>>29)&7u));
-    if(noise1[0]=='\0' || noise2[0]=='\0') puts(noise1);
+    if(noise1[0]=='\0' || noise2[0]=='\0') puts((const char *)noise1);
     return 0;
 }
