@@ -36,6 +36,9 @@ jobs:
           test "$(./build/diff-v2 7)" = "22"
           test "$(./build/diff-v1 11)" = "18"
           test "$(./build/diff-v2 11)" = "34"
+          ./build/defensive-lab | grep -q "^config:version=1;mode=training$"
+          strings -a build/defensive-lab | grep -q "telemetry.example.com"
+          strings -a build/defensive-lab | grep -q "192.0.2.42"
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
