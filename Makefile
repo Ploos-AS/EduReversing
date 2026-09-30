@@ -3,9 +3,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -45,6 +45,20 @@ dynamic-lab: $(BUILD)/dynamic-lab
 $(BUILD)/dynamic-lab: fixtures/src/dynamic-lab.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) -O0 -g -fno-omit-frame-pointer -fno-inline -o $@ $<
+
+archaeology-lab: $(BUILD)/archaeology-lab-O0 $(BUILD)/archaeology-lab-O1 $(BUILD)/archaeology-lab-O2
+
+$(BUILD)/archaeology-lab-O0: fixtures/src/archaeology-lab.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O0 -o $@ $<
+
+$(BUILD)/archaeology-lab-O1: fixtures/src/archaeology-lab.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O1 -o $@ $<
+
+$(BUILD)/archaeology-lab-O2: fixtures/src/archaeology-lab.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
