@@ -3,9 +3,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0
 
 fixtures: $(BUILD)/unknown-01
 
@@ -105,6 +105,12 @@ $(BUILD)/case-01: fixtures/src/case-01.c
 case-02: $(BUILD)/case-02
 
 $(BUILD)/case-02: fixtures/src/case-02.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
+
+capstone-m0: $(BUILD)/capstone-m0
+
+$(BUILD)/capstone-m0: fixtures/src/capstone-m0.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) -O2 -s -o $@ $<
 
