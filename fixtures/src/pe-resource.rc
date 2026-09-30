@@ -1,0 +1,6 @@
+/* SPDX-License-Identifier: MIT */
+#define IDS_COURSE 101
+STRINGTABLE
+BEGIN
+    IDS_COURSE "EduReversing benign PE resource"
+END
