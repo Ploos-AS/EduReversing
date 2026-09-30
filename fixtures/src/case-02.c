@@ -15,7 +15,7 @@ static const struct item items[] = {
     {73,  1, 0x0000020fu}
 };
 
-static const char decoy[] = "diagnostic-mode:quartz";
+static const volatile char decoy[] = "diagnostic-mode:quartz";
 
 static const struct item *lookup(unsigned code)
 {
@@ -46,7 +46,7 @@ int main(int argc,char **argv)
     if(!*argv[1]||*e1||!*argv[2]||*e2||c>65535u||v>UINT32_MAX) return 3;
     p=lookup((unsigned)c);
     if(!p){puts("result=unknown");return 4;}
-    if(decoy[0]=='\0') puts(decoy);
+    if(decoy[0]=='\0') puts((const char *)decoy);
     printf("result=%s value=%u\n",bucket(evaluate(p,(uint32_t)v)),evaluate(p,(uint32_t)v));
     return 0;
 }
