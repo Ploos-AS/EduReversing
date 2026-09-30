@@ -49,6 +49,14 @@ jobs:
           grep -q "^HUNK_SYMBOL hunk=0 name=entry value=0$" /tmp/hunk-reloc.txt
           grep -q "^HUNK_DATA hunk=1 longs=1 bytes=12345678$" /tmp/hunk-reloc.txt
           grep -q "^HUNK_BSS hunk=2 longs=2$" /tmp/hunk-reloc.txt
+          file build/case-01 | grep -q "ELF 64-bit"
+          test "$(./build/case-01 0 | cut -d= -f1)" = "result"
+          set +e
+          ./build/case-01 nope >/tmp/case01.out 2>/tmp/case01.err
+          case_rc=$?
+          set -e
+          test "$case_rc" -eq 3
+          grep -q "^case-01: invalid input$" /tmp/case01.err
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
