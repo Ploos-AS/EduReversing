@@ -16,6 +16,11 @@ jobs:
       - name: Repository safety policy
         run: sh scripts/check-repository-policy.sh
 
+      - name: Install PE cross-toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-x86-64 binutils-mingw-w64-x86-64
+
       - name: Build benign fixtures
         run: make all
 
