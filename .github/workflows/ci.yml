@@ -43,6 +43,12 @@ jobs:
           grep -q "^HUNK_HEADER table=1 first=0 last=0$" /tmp/hunk.txt
           grep -q "^HUNK_CODE longs=1 bytes=702a4e75$" /tmp/hunk.txt
           grep -q "^HUNK_END$" /tmp/hunk.txt
+          python3 tools/hunk_records.py build/reloc.hunk >/tmp/hunk-reloc.txt
+          grep -q "^HUNK_HEADER table=3 first=0 last=2 sizes=\[2, 1, 2\]$" /tmp/hunk-reloc.txt
+          grep -q "^HUNK_RELOC32 source=0 target=1 offsets=\[2\]$" /tmp/hunk-reloc.txt
+          grep -q "^HUNK_SYMBOL hunk=0 name=entry value=0$" /tmp/hunk-reloc.txt
+          grep -q "^HUNK_DATA hunk=1 longs=1 bytes=12345678$" /tmp/hunk-reloc.txt
+          grep -q "^HUNK_BSS hunk=2 longs=2$" /tmp/hunk-reloc.txt
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
