@@ -4,9 +4,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -126,6 +126,19 @@ case-pe-01: $(BUILD)/case-pe-01.exe
 $(BUILD)/case-pe-01.exe: fixtures/src/case-pe-01.c
 	mkdir -p $(BUILD)
 	$(PE_CC) $(WARN) -O2 -s -o $@ $<
+
+pe-library: $(BUILD)/edu-reversing.dll
+
+$(BUILD)/edu-reversing.dll: fixtures/src/pe-library.c
+	mkdir -p $(BUILD)
+	$(PE_CC) $(WARN) -O1 -shared -o $@ $<
+
+pe-resource-lab: $(BUILD)/pe-resource-lab.exe
+
+$(BUILD)/pe-resource-lab.exe: fixtures/src/pe-resource-lab.c fixtures/src/pe-resource.rc
+	mkdir -p $(BUILD)
+	x86_64-w64-mingw32-windres fixtures/src/pe-resource.rc -O coff -o $(BUILD)/pe-resource.res
+	$(PE_CC) $(WARN) -O1 -o $@ fixtures/src/pe-resource-lab.c $(BUILD)/pe-resource.res
 
 clean:
 	rm -rf $(BUILD)
