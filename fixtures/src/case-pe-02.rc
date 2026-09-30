@@ -1,0 +1,8 @@
+/* SPDX-License-Identifier: MIT */
+#define IDS_NOTE 201
+#define IDS_DECOY 202
+STRINGTABLE
+BEGIN
+    IDS_NOTE  "EduReversing Case 05 training resource"
+    IDS_DECOY "telemetry.example.invalid"
+END
