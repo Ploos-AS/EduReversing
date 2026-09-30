@@ -153,6 +153,33 @@ jobs:
           test "$native_result" = "$aarch64_result"
           test "$native_result" = "$m68k_result"
           echo "$native_result" | grep -Eq "^result=[0-9a-f]{8}$"
+          file build/capstone-m2-x86_64 | grep -q "ELF 64-bit"
+          file build/capstone-m2-aarch64 | grep -q "ARM aarch64"
+          file build/capstone-m2-m68k | grep -q "Motorola m68k"
+          readelf -h build/capstone-m2-aarch64 | grep -q "AArch64"
+          readelf -h build/capstone-m2-m68k | grep -q "MC68000"
+          readelf -h build/capstone-m2-m68k | grep -q "2's complement, big endian"
+          cap_native="$(build/capstone-m2-x86_64 137 reverse)"
+          cap_a64="$(qemu-aarch64 -L /usr/aarch64-linux-gnu build/capstone-m2-aarch64 137 reverse)"
+          cap_m68k="$(qemu-m68k -L /usr/m68k-linux-gnu build/capstone-m2-m68k 137 reverse)"
+          test "$cap_native" = "$cap_a64"
+          test "$cap_native" = "$cap_m68k"
+          echo "$cap_native" | grep -Eq "^state=ok lane=1 class=[0-7] ticket=[0-9a-f]{8}$"
+          set +e
+          build/capstone-m2-x86_64 999 reverse >/tmp/cap-m2-native-unmapped.txt
+          cap_native_rc=$?
+          qemu-aarch64 -L /usr/aarch64-linux-gnu build/capstone-m2-aarch64 999 reverse >/tmp/cap-m2-a64-unmapped.txt
+          cap_a64_rc=$?
+          qemu-m68k -L /usr/m68k-linux-gnu build/capstone-m2-m68k 999 reverse >/tmp/cap-m2-m68k-unmapped.txt
+          cap_m68k_rc=$?
+          set -e
+          test "$cap_native_rc" -eq 4
+          test "$cap_a64_rc" -eq 4
+          test "$cap_m68k_rc" -eq 4
+          cmp /tmp/cap-m2-native-unmapped.txt /tmp/cap-m2-a64-unmapped.txt
+          cmp /tmp/cap-m2-native-unmapped.txt /tmp/cap-m2-m68k-unmapped.txt
+          grep -q "^state=unmapped$" /tmp/cap-m2-native-unmapped.txt
+          test -z "$(git status --porcelain --untracked-files=all)"
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
