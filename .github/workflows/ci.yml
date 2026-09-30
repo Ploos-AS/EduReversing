@@ -144,6 +144,15 @@ jobs:
           set -e
           test "$m68k_rc" -eq 4
           grep -q "^state=unknown$" /tmp/case-m68k-unknown.txt
+          file build/cross-isa-x86_64 | grep -q "ELF 64-bit"
+          file build/cross-isa-aarch64 | grep -q "ARM aarch64"
+          file build/cross-isa-m68k | grep -q "Motorola m68k"
+          native_result="$(build/cross-isa-x86_64 0x12345678)"
+          aarch64_result="$(qemu-aarch64 -L /usr/aarch64-linux-gnu build/cross-isa-aarch64 0x12345678)"
+          m68k_result="$(qemu-m68k -L /usr/m68k-linux-gnu build/cross-isa-m68k 0x12345678)"
+          test "$native_result" = "$aarch64_result"
+          test "$native_result" = "$m68k_result"
+          echo "$native_result" | grep -Eq "^result=[0-9a-f]{8}$"
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
