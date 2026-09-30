@@ -38,7 +38,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=r2-build /r2-root/ /
-RUN r2 -v | grep -F "6.2.2"
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/radare2.conf \
+    && ldconfig \
+    && r2 -v | grep -F "6.2.2"
 
 RUN useradd --create-home --shell /bin/bash student
 
