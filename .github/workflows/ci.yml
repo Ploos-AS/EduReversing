@@ -117,6 +117,16 @@ jobs:
           aarch64-linux-gnu-objdump -d build/aarch64-lab >/tmp/aarch64-lab.dis
           grep -q "<transform>" /tmp/aarch64-lab.dis
           qemu-aarch64 -L /usr/aarch64-linux-gnu build/aarch64-lab 7 | grep -Eq "^result=[0-9a-f]{16}$"
+          file build/case-aarch64-01 | grep -q "ARM aarch64"
+          readelf -h build/case-aarch64-01 | grep -q "AArch64"
+          aarch64-linux-gnu-objdump -d build/case-aarch64-01 >/tmp/case-aarch64-01.dis
+          qemu-aarch64 -L /usr/aarch64-linux-gnu build/case-aarch64-01 121 hello | grep -Eq "^state=ok lane=1 token=[0-9a-f]{8}$"
+          set +e
+          qemu-aarch64 -L /usr/aarch64-linux-gnu build/case-aarch64-01 999 hello >/tmp/case-aarch64-unknown.txt
+          a64_rc=$?
+          set -e
+          test "$a64_rc" -eq 4
+          grep -q "^state=unknown$" /tmp/case-aarch64-unknown.txt
           file build/m68k-lab | grep -q "Motorola m68k"
           readelf -h build/m68k-lab | grep -q "MC68000"
           readelf -h build/m68k-lab | grep -q "2's complement, big endian"
