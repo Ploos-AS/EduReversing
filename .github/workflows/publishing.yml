@@ -1,0 +1,26 @@
+name: Publishing qualification
+
+on:
+  push:
+    paths:
+      - "publication.yaml"
+      - "lessons/**"
+      - "cases/**"
+      - "docs/**"
+      - ".github/workflows/publishing.yml"
+  pull_request:
+    paths:
+      - "publication.yaml"
+      - "lessons/**"
+      - "cases/**"
+      - "docs/**"
+      - ".github/workflows/publishing.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  publishing:
+    uses: Ploos-AS/publishing/.github/workflows/reusable-book-validate.yml@v1
+    with:
+      metadata: publication.yaml
