@@ -31,6 +31,11 @@ jobs:
           ./build/dynamic-lab 17 | grep -Eq "^result=[0-9]+ observations=[0-9]+$"
           test "$(./build/archaeology-lab-O0 3 9)" = "$(./build/archaeology-lab-O1 3 9)"
           test "$(./build/archaeology-lab-O1 3 9)" = "$(./build/archaeology-lab-O2 3 9)"
+          ./build/structure-lab | grep -q "^total=26$"
+          test "$(./build/diff-v1 7)" = "22"
+          test "$(./build/diff-v2 7)" = "22"
+          test "$(./build/diff-v1 11)" = "18"
+          test "$(./build/diff-v2 11)" = "34"
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
