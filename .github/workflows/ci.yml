@@ -93,6 +93,15 @@ jobs:
           strings -el build/case-pe-02.exe >/tmp/case-pe-02-wide.txt
           grep -q "EduReversing Case 05 training resource" /tmp/case-pe-02-wide.txt
           grep -q "telemetry.example.invalid" /tmp/case-pe-02-wide.txt
+          file build/capstone-m1.exe | grep -q "PE32+ executable"
+          x86_64-w64-mingw32-objdump -f build/capstone-m1.exe | grep -q "pei-x86-64"
+          x86_64-w64-mingw32-objdump -h build/capstone-m1.exe >/tmp/capstone-m1-sections.txt
+          grep -q ".rsrc" /tmp/capstone-m1-sections.txt
+          strings -a build/capstone-m1.exe >/tmp/capstone-m1-ascii.txt
+          grep -q "capstone-marker:documentation-only" /tmp/capstone-m1-ascii.txt
+          strings -el build/capstone-m1.exe >/tmp/capstone-m1-wide.txt
+          grep -q "EduReversing M1 Capstone" /tmp/capstone-m1-wide.txt
+          grep -q "sync.example.invalid" /tmp/capstone-m1-wide.txt
           grep -q "DLL Name:" /tmp/pe-lab.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
