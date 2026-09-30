@@ -1,0 +1,10 @@
+/* SPDX-License-Identifier: MIT */
+#define IDS_TITLE 301
+#define IDS_NOTE 302
+#define IDS_DECOY 303
+STRINGTABLE
+BEGIN
+    IDS_TITLE "EduReversing M1 Capstone"
+    IDS_NOTE  "Course-owned benign Windows fixture"
+    IDS_DECOY "sync.example.invalid"
+END
