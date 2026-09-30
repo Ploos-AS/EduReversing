@@ -39,6 +39,10 @@ jobs:
           ./build/defensive-lab | grep -q "^config:version=1;mode=training$"
           strings -a build/defensive-lab | grep -q "telemetry.example.com"
           strings -a build/defensive-lab | grep -q "192.0.2.42"
+          python3 tools/hunk_info.py build/minimal.hunk >/tmp/hunk.txt
+          grep -q "^HUNK_HEADER table=1 first=0 last=0$" /tmp/hunk.txt
+          grep -q "^HUNK_CODE longs=1 bytes=702a4e75$" /tmp/hunk.txt
+          grep -q "^HUNK_END$" /tmp/hunk.txt
           test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
           set +e
           ./build/unknown-01 other >/tmp/rejected.txt
