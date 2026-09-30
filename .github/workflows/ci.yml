@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repository safety policy
+        run: sh scripts/check-repository-policy.sh
+
+      - name: Build benign fixtures
+        run: make fixtures
+
+      - name: Inspect fixture
+        run: |
+          file build/unknown-01
+          readelf -h build/unknown-01
+          test "$(./build/unknown-01 reversing | cut -d: -f1)" = "accepted"
+          set +e
+          ./build/unknown-01 other >/tmp/rejected.txt
+          rc=$?
+          set -e
+          test "$rc" -eq 1
+          test "$(cut -d: -f1 </tmp/rejected.txt)" = "rejected"
+
+  student-oci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build student image
+        run: docker build -t edureversing-student:m0 -f student/Dockerfile .
+
+      - name: Smoke test student image
+        run: |
+          docker run --rm edureversing-student:m0 sh -lc '
+            gcc --version &&
+            gdb --version &&
+            objdump --version &&
+            readelf --version &&
+            file --version
+          '
