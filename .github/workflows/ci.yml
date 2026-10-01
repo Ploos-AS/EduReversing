@@ -215,6 +215,26 @@ jobs:
           grep -q "198.51.100.27:443" fixtures/incident-02/evidence.txt
           grep -q "demo.invalid" fixtures/incident-02/evidence.txt
           ./scripts/check-repository-policy.sh
+          file build/capstone-m3-v1 | grep -q "ELF 64-bit"
+          file build/capstone-m3-v2 | grep -q "ELF 64-bit"
+          m3_v1="$(build/capstone-m3-v1 73 alpha)"
+          m3_v2="$(build/capstone-m3-v2 73 alpha)"
+          echo "$m3_v1" | grep -Eq "^state=ok lane=2 ticket=[0-9a-f]{8} cfg=32$"
+          echo "$m3_v2" | grep -Eq "^state=revised lane=2 ticket=[0-9a-f]{8} cfg=31$"
+          test "$m3_v1" != "$m3_v2"
+          set +e
+          build/capstone-m3-v1 999 alpha >/tmp/m3-v1-unknown.txt
+          m3_v1_rc=$?
+          build/capstone-m3-v2 999 alpha >/tmp/m3-v2-unknown.txt
+          m3_v2_rc=$?
+          set -e
+          test "$m3_v1_rc" -eq 4
+          test "$m3_v2_rc" -eq 4
+          grep -q "^state=unknown$" /tmp/m3-v1-unknown.txt
+          cmp /tmp/m3-v1-unknown.txt /tmp/m3-v2-unknown.txt
+          grep -q "203.0.113.18:443" fixtures/incident-m3-capstone/evidence.txt
+          ./scripts/check-repository-policy.sh
+          test -z "$(git status --porcelain --untracked-files=all)"
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
