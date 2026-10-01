@@ -204,6 +204,17 @@ jobs:
           file build/encoding-lab | grep -q "ELF 64-bit"
           test "$(build/encoding-lab)" = "server=demo.invalid;mode=report;"
           grep -q "sample-e:" fixtures/analysis-signals.txt
+          file build/case-m3-01 | grep -q "ELF 64-bit"
+          case_m3="$(build/case-m3-01 alpha)"
+          echo "$case_m3" | grep -Eq "^state=report token=[0-9a-f]{8} config=32$"
+          set +e
+          build/case-m3-01 ab >/dev/null
+          case_m3_rc=$?
+          set -e
+          test "$case_m3_rc" -eq 3
+          grep -q "198.51.100.27:443" fixtures/incident-02/evidence.txt
+          grep -q "demo.invalid" fixtures/incident-02/evidence.txt
+          ./scripts/check-repository-policy.sh
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
