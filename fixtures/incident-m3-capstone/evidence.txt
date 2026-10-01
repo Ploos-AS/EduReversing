@@ -1,0 +1,8 @@
+# Synthetic inert evidence
+2026-03-12T14:20:01Z PROCESS /opt/demo/collector 73 alpha
+2026-03-12T14:20:02Z FILE_READ /opt/demo/profile.dat
+2026-03-12T14:20:03Z NOTE embedded strings: sandbox debugger autorun
+2026-03-12T14:20:04Z DNS demo.invalid
+2026-03-12T14:20:05Z NETWORK 203.0.113.18:443 BLOCKED
+2026-03-12T14:25:00Z UPDATE collector-v1 -> collector-v2
+2026-03-12T14:25:05Z PROCESS /opt/demo/collector 73 alpha
