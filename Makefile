@@ -6,9 +6,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap
 
 fixtures: $(BUILD)/unknown-01
 
@@ -207,6 +207,12 @@ $(BUILD)/capstone-m2-aarch64: fixtures/src/capstone-m2.c
 $(BUILD)/capstone-m2-m68k: fixtures/src/capstone-m2.c
 	mkdir -p $(BUILD)
 	$(M68K_CC) $(WARN) -O2 -s -o $@ $<
+
+decompiler-trap: $(BUILD)/decompiler-trap
+
+$(BUILD)/decompiler-trap: fixtures/src/decompiler-trap.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
 
 clean:
 	rm -rf $(BUILD)
