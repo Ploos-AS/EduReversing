@@ -1,0 +1,6 @@
+# Synthetic inert observations for Case 10
+2026-02-03T09:00:01Z PROCESS /opt/demo/report-helper alpha
+2026-02-03T09:00:02Z FILE_READ /opt/demo/config.bin
+2026-02-03T09:00:03Z DNS demo.invalid
+2026-02-03T09:00:04Z NOTE strings observed: debug sandbox trace persistence
+2026-02-03T09:00:05Z NETWORK 198.51.100.27:443 BLOCKED
