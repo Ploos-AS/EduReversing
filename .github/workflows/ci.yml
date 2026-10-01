@@ -180,6 +180,15 @@ jobs:
           cmp /tmp/cap-m2-native-unmapped.txt /tmp/cap-m2-m68k-unmapped.txt
           grep -q "^state=unmapped$" /tmp/cap-m2-native-unmapped.txt
           test -z "$(git status --porcelain --untracked-files=all)"
+          file build/decompiler-trap | grep -q "ELF 64-bit"
+          file build/protocol-lab | grep -q "ELF 64-bit"
+          protocol_hex="$(python3 tools/make_protocol_fixture.py)"
+          build/protocol-lab "$protocol_hex" | grep -q "^type=1 seq=9029 payload=3 checksum=ok$"
+          set +e
+          build/protocol-lab 4552010301234142430000 >/dev/null
+          protocol_rc=$?
+          set -e
+          test "$protocol_rc" -eq 7
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
