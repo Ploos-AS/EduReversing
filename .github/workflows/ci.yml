@@ -196,6 +196,11 @@ jobs:
           echo "$diff_v1" | grep -Eq "^mode=classic score=[0-9a-f]{8}$"
           echo "$diff_v2" | grep -Eq "^mode=revised score=[0-9a-f]{8}$"
           test "$diff_v1" != "$diff_v2"
+          incident_cfg="$(python3 tools/extract_incident_config.py)"
+          echo "$incident_cfg" | grep -q "^magic=ERCF version=1 kind=5 length=26$"
+          echo "$incident_cfg" | grep -q "^server=demo.invalid;port=443;mode=report;$"
+          grep -q "192.0.2.44:443" fixtures/incident-01/network.txt
+          grep -q "demo.invalid" fixtures/incident-01/network.txt
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
