@@ -6,9 +6,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab
 
 fixtures: $(BUILD)/unknown-01
 
@@ -217,6 +217,16 @@ $(BUILD)/decompiler-trap: fixtures/src/decompiler-trap.c
 protocol-lab: $(BUILD)/protocol-lab
 
 $(BUILD)/protocol-lab: fixtures/src/protocol-lab.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
+
+diff-lab: $(BUILD)/diff-lab-v1 $(BUILD)/diff-lab-v2
+
+$(BUILD)/diff-lab-v1: fixtures/src/diff-lab-v1.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
+
+$(BUILD)/diff-lab-v2: fixtures/src/diff-lab-v2.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) -O2 -s -o $@ $<
 
