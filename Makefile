@@ -6,9 +6,9 @@ WARN := -Wall -Wextra -Wpedantic
 REVERSE_FLAGS := -fno-omit-frame-pointer -fno-inline
 BUILD := build
 
-.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab encoding-lab case-m3-01 clean
+.PHONY: all fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab encoding-lab case-m3-01 capstone-m3 clean
 
-all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab encoding-lab case-m3-01
+all: fixtures compiler-lab elf-lab static-lab dynamic-lab archaeology-lab structure-lab differential-lab defensive-lab hunk-lab hunk-reloc-lab case-01 case-02 capstone-m0 pe-lab case-pe-01 pe-library pe-resource-lab case-pe-02 capstone-m1 aarch64-lab m68k-lab case-aarch64-01 case-m68k-01 cross-isa-lab capstone-m2 decompiler-trap protocol-lab diff-lab encoding-lab case-m3-01 capstone-m3
 
 fixtures: $(BUILD)/unknown-01
 
@@ -239,6 +239,16 @@ $(BUILD)/encoding-lab: fixtures/src/encoding-lab.c
 case-m3-01: $(BUILD)/case-m3-01
 
 $(BUILD)/case-m3-01: fixtures/src/case-m3-01.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
+
+capstone-m3: $(BUILD)/capstone-m3-v1 $(BUILD)/capstone-m3-v2
+
+$(BUILD)/capstone-m3-v1: fixtures/src/capstone-m3-v1.c
+	mkdir -p $(BUILD)
+	$(CC) $(WARN) -O2 -s -o $@ $<
+
+$(BUILD)/capstone-m3-v2: fixtures/src/capstone-m3-v2.c
 	mkdir -p $(BUILD)
 	$(CC) $(WARN) -O2 -s -o $@ $<
 
