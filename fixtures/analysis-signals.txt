@@ -1,0 +1,8 @@
+# Synthetic anti-analysis recognition exercise
+# These are inert observations, not executable techniques.
+
+sample-a: imports clock_gettime; checks elapsed interval around a calculation
+sample-b: reads an environment variable named ANALYSIS_MODE and changes a diagnostic message
+sample-c: contains strings "debug", "trace", and "sandbox" but no references from reachable code
+sample-d: has a long arithmetic loop whose result is consumed by normal application logic
+sample-e: contains a function named detect_debugger in symbol metadata, but the function returns a constant and is never called
