@@ -1,0 +1,5 @@
+# Synthetic filesystem observations
+2026-01-15T10:14:03Z CREATE /tmp/er-case/config.dat
+2026-01-15T10:14:04Z CREATE /tmp/er-case/session.log
+2026-01-15T10:14:09Z WRITE  /tmp/er-case/session.log
+2026-01-15T10:14:12Z READ   /tmp/er-case/config.dat
