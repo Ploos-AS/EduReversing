@@ -1,0 +1,4 @@
+# Synthetic incident evidence — no processes were created by this fixture
+PID  PPID  USER     COMMAND
+412  1     analyst  /usr/bin/session-helper --config /tmp/er-case/config.dat
+437  412   analyst  /usr/bin/worker-demo --mode report
