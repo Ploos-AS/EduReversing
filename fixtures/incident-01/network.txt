@@ -1,0 +1,4 @@
+# Synthetic network observations. Reserved documentation ranges only.
+2026-01-15T10:14:15Z DNS demo.invalid
+2026-01-15T10:14:16Z TCP 192.0.2.44:443 CONNECT_ATTEMPT
+2026-01-15T10:14:16Z TCP 192.0.2.44:443 BLOCKED
