@@ -189,6 +189,13 @@ jobs:
           protocol_rc=$?
           set -e
           test "$protocol_rc" -eq 7
+          file build/diff-lab-v1 | grep -q "ELF 64-bit"
+          file build/diff-lab-v2 | grep -q "ELF 64-bit"
+          diff_v1="$(build/diff-lab-v1 0x12345678)"
+          diff_v2="$(build/diff-lab-v2 0x12345678)"
+          echo "$diff_v1" | grep -Eq "^mode=classic score=[0-9a-f]{8}$"
+          echo "$diff_v2" | grep -Eq "^mode=revised score=[0-9a-f]{8}$"
+          test "$diff_v1" != "$diff_v2"
           file build/capstone-m0 | grep -q "ELF 64-bit"
           ./build/capstone-m0 A:hello | grep -Eq "^ticket=[0-9a-f]{8} class=[0-7]$"
           strings -a build/capstone-m0 >/tmp/capstone.strings
