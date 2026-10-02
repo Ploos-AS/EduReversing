@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     if (b[0] != 0x45 || b[1] != 0x52) return 4;
     if (b[2] != 1u) return 5;
     payload_len = b[3];
-    if (payload_len + 8u != n) return 6;
+    if (payload_len + 7u != n) return 6;
     seq = be16(&b[4]);
     got = be16(&b[n - 2u]);
     want = checksum(b, n - 2u);
